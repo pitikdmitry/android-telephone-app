@@ -10,11 +10,13 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     private ViewGroup container;
-    private final Integer MAX_NUMBER = 9;
-    private final Integer MIN_NUMBER = 0;
-    private Integer number = MAX_NUMBER;
+    private final Integer FIRST_NUMBER = 1;
+    private final Integer LAST_NUMBER = 9;
+    private Integer number = FIRST_NUMBER;
 
     private LayoutInflater inflater;
+
+    private TextView phoneNumber;
 
 
     @Override
@@ -24,6 +26,9 @@ public class MainActivity extends AppCompatActivity {
         this.inflater = LayoutInflater.from(this);
 
         this.container = (ViewGroup) findViewById(R.id.container);
+        this.phoneNumber = findViewById(R.id.text_phone);
+        this.phoneNumber.setText("");
+
         useInflater();
     }
 
@@ -47,8 +52,10 @@ public class MainActivity extends AppCompatActivity {
         final int number_of_rows = 3;
         for (int i = 0; i < number_of_rows; ++i) {
             addOne(rowGroup);
-            if (number > MIN_NUMBER) {
-                number--;
+            if (number < LAST_NUMBER) {
+                number++;
+            } else {
+                number = 0;
             }
         }
 
@@ -59,6 +66,18 @@ public class MainActivity extends AppCompatActivity {
         final View view = inflater.inflate(R.layout.number, rowGroup, false);
         TextView textView = (TextView) view;
         textView.setText(number.toString());
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                appendPhoneNumber(view);
+            }
+        });
         rowGroup.addView(textView);
+    }
+
+    private void appendPhoneNumber(View view) {
+        TextView textView = (TextView) view;
+        this.phoneNumber.setText(this.phoneNumber.getText().toString() + textView.getText().toString());
+
     }
 }
